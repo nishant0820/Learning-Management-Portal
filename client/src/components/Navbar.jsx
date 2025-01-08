@@ -48,7 +48,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto hidden md:flex justify-between items-center gap-10 h-full">
         <div className="flex items-center gap-2">
           <BookA size={"30"} />
-          <h1 className="hidden md:block font-extrabold text-2xl">Learning</h1>
+          <Link to="/"><h1 className="hidden md:block font-extrabold text-2xl">Learning</h1></Link>
         </div>
         {/* User icon and dark mode icon */}
         <div className="flex items-center gap-8">
@@ -67,10 +67,10 @@ const Navbar = () => {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
                     <Link to="my-learning">My Learning</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
                     <Link to="profile">Edit Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem
@@ -83,7 +83,7 @@ const Navbar = () => {
                 {user.role === "instructor" && (
                   <>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Dashboard</DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer"><Link to="/">Dashboard</Link></DropdownMenuItem>
                   </>
                 )}
               </DropdownMenuContent>

@@ -21,6 +21,7 @@ import {
 import {
   useEditCourseMutation,
   useGetCourseByIdQuery,
+  usePublishCourseMutation,
 } from "@/features/api/courseApi";
 import { Loader2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -40,13 +41,24 @@ const CourseTab = () => {
 
   const params = useParams();
   const courseId = params.courseId;
+  const [publishCourse, {}] = usePublishCourseMutation();
   const {
     data: courseByIdData,
     isLoading: courseByIdLoading,
     refetch,
   } = useGetCourseByIdQuery(courseId);
 
-  const isPublished = false;
+  const publishStatusHandler = async (action) => {
+    try {
+      const response = await publishCourse({ courseId, query: action });
+      if (response.data) {
+        refetch();
+        toast.success(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.data.message);
+    }
+  };
 
   useEffect(() => {
     if (courseByIdData?.course) {
@@ -125,8 +137,15 @@ const CourseTab = () => {
           </CardDescription>
         </div>
         <div className="space-x-2">
-          <Button variant="outline">
-            {isPublished ? "Unpublish" : "Publish"}
+          <Button disabled={courseByIdData?.course.lectures.length === 0}
+            variant="outline"
+            onClick={() =>
+              publishStatusHandler(
+                courseByIdData?.course.isPublished ? "false" : "true"
+              )
+            }
+          >
+            {courseByIdData?.course.isPublished ? "Unpublish" : "Publish"}
           </Button>
           <Button>Remove Course</Button>
         </div>
